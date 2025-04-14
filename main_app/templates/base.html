@@ -10,13 +10,20 @@
     <title>Cat Collector</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     {% block head %} 
-    {% endblock %}
+    {% endblock %}  
   </head>
   <body>
     <header>
+        <!-- <link
+  rel="shortcut icon"
+  type="image/png"
+  href="{% static 'images/splash.svg' %}"
+/> -->
+
       <div class="header-logo-container">
         <a href="/">
-          <img src="" alt="The Cat Collector Logo" />
+          <img src="{% static 'images/header-logo.svg' %}" alt="The Cat Collector Logo" />
+
         </a>
       </div>
       <nav>
