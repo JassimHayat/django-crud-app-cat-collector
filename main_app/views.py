@@ -1,11 +1,5 @@
-# main_app/views.py
-
 from django.shortcuts import render
-
-# Import HttpResponse to send text-based responses
-from django.http import HttpResponse
-
-# views.py
+# Create your views here.
 
 class Cat:
     def __init__(self, name, breed, description, age):
@@ -23,19 +17,11 @@ cats = [
 ]
 
 
-# Define the home view function
 def home(request):
-    # Send a simple HTML response
-    return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
-
-def about(request):
-    return HttpResponse('<h1>About the CatCollector</h1>')
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
 
-
-
 def cat_index(request):
-    # Render the cats/index.html template with the cats data
     return render(request, 'cats/index.html', {'cats': cats})
