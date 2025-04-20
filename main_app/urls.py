@@ -9,4 +9,9 @@ urlpatterns = [
     
     # new route below
     path('cats/<int:cat_id>/', views.cat_detail, name='cat-detail'),
+    path('cats/create/', views.CatCreate.as_view(), name='cat-create'),
+    # Add the new routes below
+    path('cats/<int:pk>/update/', views.CatUpdate.as_view(), name='cat-update'),
+    path('cats/<int:pk>/delete/', views.CatDelete.as_view(), name='cat-delete'),
+
 ]
