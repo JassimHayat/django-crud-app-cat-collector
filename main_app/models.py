@@ -26,7 +26,7 @@ class Cat(models.Model):
 # Add new Feeding model below Cat model
 
 class Feeding(models.Model):
-    date = models.DateField()
+    date = models.DateField('Feeding Date ')
     meal = models.CharField(
         max_length=1,
         # add the 'choices' field option
@@ -35,8 +35,8 @@ class Feeding(models.Model):
         default=MEALS,
     ) 
 
-cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
+    cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
 
-def __str__(self):
+    def __str__(self):
         # Nice method for obtaining the friendly value of a Field.choice
         return f"{self.get_meal_display()} on {self.date}"
