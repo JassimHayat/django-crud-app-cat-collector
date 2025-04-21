@@ -22,6 +22,32 @@ def cat_index(request):
     cats = Cat.objects.filter(user=request.user)
     return render(request, 'cats/index.html', { 'cats': cats })
 
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        print("hello")
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+        # This will add the user to the database
+            user = form.save()
+            # This is how we log a user in
+            login(request, user)
+            return redirect('cat-index')
+        else:
+            error_message = 'Invalid sign up - try again'
+
+
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'signup.html', context)
+    # Same as: 
+    # return render(
+    #     request, 
+    #     'signup.html',
+    #     {'form': form, 'error_message': error_message}
+    # )
+
 @login_required
 def cat_detail(request, cat_id):
     cat = Cat.objects.get(id=cat_id)
@@ -64,27 +90,3 @@ def add_feeding(request, cat_id):
         new_feeding.save()
     return redirect('cat-detail', cat_id=cat_id)
 
-
-def signup(request):
-    error_message = ''
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-        # This will add the user to the database
-            user = form.save()
-            # This is how we log a user in
-            login(request, user)
-            return redirect('cat-index')
-        else:
-            error_message = 'Invalid sign up - try again'
-
-
-    form = UserCreationForm()
-    context = {'form': form, 'error_message': error_message}
-    return render(request, 'signup.html', context)
-    # Same as: 
-    # return render(
-    #     request, 
-    #     'signup.html',
-    #     {'form': form, 'error_message': error_message}
-    # )
