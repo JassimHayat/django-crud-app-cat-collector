@@ -5,8 +5,8 @@ from .forms import FeedingForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -19,10 +19,10 @@ def about(request):
     return render(request, 'about.html')
 
 def cat_index(request):
-    cats = Cat.objects.all()
-    return render(request, 'cats/index.html', {'cats': cats})
+    cats = Cat.objects.filter(user=request.user)
+    return render(request, 'cats/index.html', { 'cats': cats })
 
-
+@login_required
 def cat_detail(request, cat_id):
     cat = Cat.objects.get(id=cat_id)
     feeding_form = FeedingForm()
@@ -32,7 +32,7 @@ def cat_detail(request, cat_id):
     })
 
 
-class CatCreate(CreateView):
+class CatCreate(LoginRequiredMixin, CreateView):
     model = Cat
     fields = ['name', 'breed', 'description', 'age']
 
@@ -51,7 +51,7 @@ class CatDelete(DeleteView):
     model = Cat
     success_url = '/cats/'
 
-
+@login_required
 def add_feeding(request, cat_id):
     # create a ModelForm instance using the data in request.POST
     form = FeedingForm(request.POST)
@@ -77,3 +77,14 @@ def signup(request):
             return redirect('cat-index')
         else:
             error_message = 'Invalid sign up - try again'
+
+
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'signup.html', context)
+    # Same as: 
+    # return render(
+    #     request, 
+    #     'signup.html',
+    #     {'form': form, 'error_message': error_message}
+    # )
